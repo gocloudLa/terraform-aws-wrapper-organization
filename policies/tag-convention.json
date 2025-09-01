@@ -1,0 +1,30 @@
+{
+    "tags": {
+        "company": {
+            "tag_key": {
+                "@@assign": "company",
+                "@@operators_allowed_for_child_policies": ["@@none"]
+            }
+        },
+        "provisioner": {
+            "tag_key": {
+                "@@assign": "provisioner",
+                "@@operators_allowed_for_child_policies": ["@@none"]
+            }
+        }
+        ,
+        "environment": {
+            "tag_key": {
+                "@@assign": "environment",
+                "@@operators_allowed_for_child_policies": ["@@none"]
+            }
+        }
+        ,
+        "created-by": {
+            "tag_key": {
+                "@@assign": "created-by",
+                "@@operators_allowed_for_child_policies": ["@@none"]
+            }
+        }
+    }
+}
