@@ -150,6 +150,17 @@ terraform state push ./terraform.tfstate
 
 
 
+## 📑 Inputs
+| Name                          | Description                                                                    | Type     | Default                        | Required |
+| ----------------------------- | ------------------------------------------------------------------------------ | -------- | ------------------------------ | -------- |
+| enable_organization           | Enables or disables the organization service verification.                     | `bool`   | `false`                        | no       |
+| aws_service_access_principals | A list of principal services that will be enabled at an organization level.    | `list`   | `["cloudtrail.amazonaws.com"]` | no       |
+| feature_set                   | Allows the configuration of the billing in the accounts that will be created.  | `string` | `ALL`                          | no       |
+| organizational_units          | A map of OUs that will be created.                                             | `any`    | `{}`                           | no       |
+| accounts                      | A map of accounts that will be created under an organization or OU.            | `any`    | `{}`                           | no       |
+| enabled_policy_types          | A map of policies that will be created and later attached to an account or OU. | `any`    | `{}`                           | no       |
+| organization_policies         | A map of policies that will be created and later attached to an account or OU. | `any`    | `{}`                           | no       |
+
 
 
 
