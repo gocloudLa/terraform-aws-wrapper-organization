@@ -6,7 +6,7 @@ Each module encapsulates best practices, security configurations, and sensible d
 
 ## 📦 Module: Terraform AWS Organization Module
 <p align="right"><a href="https://github.com/gocloudLa/terraform-aws-wrapper-organization/releases/latest"><img src="https://img.shields.io/github/v/release/gocloudLa/terraform-aws-wrapper-organization.svg?style=for-the-badge" alt="Latest Release"/></a><a href=""><img src="https://img.shields.io/github/last-commit/gocloudLa/terraform-aws-wrapper-organization.svg?style=for-the-badge" alt="Last Commit"/></a><a href="https://registry.terraform.io/modules/gocloudLa/wrapper-organization/aws"><img src="https://img.shields.io/badge/Terraform-Registry-7B42BC?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform Registry"/></a></p>
-The Terraform Wrapper for AWS Organization.
+The Terraform wrapper for AWS Organization simplifies the management of AWS Organizations in the AWS cloud. This wrapper functions as a predefined template, facilitating the creation and management of organizational units, accounts, policies, and service access principals by handling all the technical details.
 
 ### ✨ Features
 
@@ -85,17 +85,17 @@ To import the root account or another account into the State of the organization
 <details><summary>Configuration Code</summary>
 
 ```hcl
-## Ejecutamos `terraform pull` para traernos el State del backend que utilicemos
+## Execute `terraform pull` to retrieve the State from the backend we are using
 terraform pull state > terraform.tfstate
 
-## Una vez hecho el pull ajustaremos el archivo backend.tf del workspace para usar el backend local 
+## Once the pull is done, we adjust the backend.tf file of the workspace to use the local backend 
 terraform {
   backend "local" {
     path = "./terraform.tfstate"
   }
 }
 
-## Definimos la cuenta que queremos importar en el codigo dentro del main.tf, el nombre de la cuenta debe ser igual al de la cuenta importada, el mail se puede obtener viendo los detalles  de la cuenta
+## Define the account we want to import in the code within main.tf, the account name must be equal to the imported account, the email can be obtained by viewing the account details
     accounts = {
       "ACCOUNT-NAME" = {
         email                             = "ACCOUNT-MAIL",
@@ -107,10 +107,10 @@ terraform {
       .
     }
 
-## Ejecutamos el comando `terraform import`, el ACCOUNT-NAME se debe tomar de la key que se utiliza para nombrar la cuenta, el ACCOUNT-ID es el número de cuenta
+## Execute the `terraform import` command, the ACCOUNT-NAME should be taken from the key used to name the account, the ACCOUNT-ID is the account number
 terraform import 'module.organization.module.wrapper_organization.module.organization.aws_organizations_account.this["ACCOUNT-NAME"]' ACCOUNT-ID
 
-## Ajustamos manualmente en el terraform.tfstate los siguientes parametros para evitar que nos intente recrear la cuenta, podemos filtrar dentro de la cuenta buscando la siguiente linea `type": "aws_organizations_account",`:
+## Manually adjust the following parameters in terraform.tfstate to prevent it from trying to recreate the account, we can filter within the account by searching for the following line `type": "aws_organizations_account",`:
       "module": "module.organization.module.wrapper_organization.module.organization",
       "mode": "managed",
       "type": "aws_organizations_account",
@@ -137,10 +137,10 @@ terraform import 'module.organization.module.wrapper_organization.module.organiz
         }
       ]
 
-## Validamos con un plan si esta todo correcto
+## Validate with a plan if everything is correct
 terraform plan
 
-## Si el plan no muestra cambios, seteamos nuevamente el backend original y pusheamos el State
+## If the plan shows no changes, set the original backend again and push the State
 terraform state push ./terraform.tfstate
 ```
 
@@ -168,7 +168,8 @@ terraform state push ./terraform.tfstate
 
 
 ## ⚠️ Important Notes
-- **🚨 Do Not Apply Terraform Changes Until Plan Shows Up:** Do not apply Terraform changes until the plan shows that changes need to be applied - this prevents accidentally overwri
+- **🚨 Critical State Management Warning:** When importing accounts, do not apply Terraform changes until the plan shows NO changes. This prevents accidentally overwriting or corrupting the organization state.
+- **📋 Account Import Process:** Follow the documented step-by-step process carefully to avoid state corruption during account imports.
 
 
 
