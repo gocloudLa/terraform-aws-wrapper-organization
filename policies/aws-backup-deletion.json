@@ -7,7 +7,7 @@
         "Action": [
               "backup:PutBackupVaultNotifications",
               "backup:DeleteBackupVaultNotifications",			 
-        "backup:PutBackupVaultAccessPolicy",
+              "backup:PutBackupVaultAccessPolicy",
               "backup:DeleteBackupVaultAccessPolicy",
               "backup:DeleteBackupVault"         
         ],
