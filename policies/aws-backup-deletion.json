@@ -1,0 +1,26 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "DenyVaultOperations",
+        "Effect": "Deny",
+        "Action": [
+              "backup:PutBackupVaultNotifications",
+              "backup:DeleteBackupVaultNotifications",			 
+              "backup:PutBackupVaultAccessPolicy",
+              "backup:DeleteBackupVaultAccessPolicy",
+              "backup:DeleteBackupVault"         
+        ],
+        "Resource": [
+          "*"
+        ],
+        "Condition": {
+          "StringNotLike": {
+            "aws:PrincipalArn": [
+              "arn:aws:iam::*:role/AWSBackupRoleWithVaultPermissions-*"
+            ]
+          }
+        }
+      }
+    ]
+  }
