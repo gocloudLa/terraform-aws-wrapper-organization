@@ -7,10 +7,30 @@ resource "aws_organizations_organization" "this" {
 
 resource "aws_organizations_organizational_unit" "this" {
 
-  for_each = local.organization_units
+  for_each = local.organization_units_l0
 
-  name      = each.key
+  name      = try(each.value.name, trimspace(each.value.path))
   parent_id = aws_organizations_organization.this[0].roots[0].id
+
+  tags = var.tags
+}
+
+resource "aws_organizations_organizational_unit" "this_l1" {
+
+  for_each = local.organization_units_l1
+
+  name      = try(each.value.name, trimspace(each.value.path))
+  parent_id = aws_organizations_organizational_unit.this[each.value.relative_path].id
+
+  tags = var.tags
+}
+
+resource "aws_organizations_organizational_unit" "this_l2" {
+
+  for_each = local.organization_units_l2
+
+  name      = try(each.value.name, trimspace(each.value.path))
+  parent_id = aws_organizations_organizational_unit.this_l1[each.value.relative_path].id
 
   tags = var.tags
 }
@@ -22,8 +42,7 @@ resource "aws_organizations_account" "this" {
   name              = each.key
   email             = each.value.email
   close_on_deletion = false
-  parent_id         = try(each.value.parent_id, "") != "" ? aws_organizations_organizational_unit.this[each.value.parent_id].id : aws_organizations_organization.this[0].roots[0].id
-  # parent_id = aws_organizations_organizational_unit.this[each.value.parent_id].id
+  parent_id         = try(each.value.parent_id, "") != "" ? local.organizational_unit_ids[each.value.parent_id] : aws_organizations_organization.this[0].roots[0].id
 
   iam_user_access_to_billing = each.value.allow_iam_users_access_to_billing ? "ALLOW" : "DENY"
 
@@ -46,7 +65,7 @@ resource "aws_organizations_policy_attachment" "this_ou" {
   for_each = local.ou_policies
 
   policy_id = aws_organizations_policy.this[each.value.policy].id
-  target_id = aws_organizations_organizational_unit.this[each.value.ou_name].id
+  target_id = local.organizational_unit_ids[each.value.ou_name]
 
   depends_on = [
     aws_organizations_organization.this

@@ -15,15 +15,19 @@ output "master_account_email" {
 }
 
 output "ou_ids" {
-  value = tomap({
-    for k, unit in aws_organizations_organizational_unit.this : k => unit.id
-  })
+  value = tomap(merge(
+    { for k, unit in aws_organizations_organizational_unit.this : k => unit.id },
+    { for k, unit in aws_organizations_organizational_unit.this_l1 : k => unit.id },
+    { for k, unit in aws_organizations_organizational_unit.this_l2 : k => unit.id },
+  ))
 }
 
 output "ou_accounts" {
-  value = tomap({
-    for k, unit in aws_organizations_organizational_unit.this : k => unit.accounts
-  })
+  value = tomap(merge(
+    { for k, unit in aws_organizations_organizational_unit.this : k => unit.accounts },
+    { for k, unit in aws_organizations_organizational_unit.this_l1 : k => unit.accounts },
+    { for k, unit in aws_organizations_organizational_unit.this_l2 : k => unit.accounts },
+  ))
 }
 
 output "account_ids" {
