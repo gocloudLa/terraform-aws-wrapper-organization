@@ -30,6 +30,12 @@ module "wrapper_organization" {
 
         }
       }
+      "Workload/Dev" = {
+        ou_policies = {
+          "tag-convention" = {}
+          "governance"     = {}
+        }
+      }
       "Sandbox" = {
         ou_policies = {
           "tag-convention" = {}
@@ -49,7 +55,7 @@ module "wrapper_organization" {
       # NEW
       "${local.metadata.public_domain}-dev" = {
         email                             = "email+dev@domain.com",
-        parent_id                         = "Workload",
+        parent_id                         = "Workload/Dev",
         allow_iam_users_access_to_billing = true
       }
       "${local.metadata.public_domain}-lab" = {

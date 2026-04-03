@@ -6,7 +6,7 @@ Each module encapsulates best practices, security configurations, and sensible d
 
 ## 📦 Module: Terraform AWS Organization Module
 <p align="right"><a href="https://github.com/gocloudLa/terraform-aws-wrapper-organization/releases/latest"><img src="https://img.shields.io/github/v/release/gocloudLa/terraform-aws-wrapper-organization.svg?style=for-the-badge" alt="Latest Release"/></a><a href=""><img src="https://img.shields.io/github/last-commit/gocloudLa/terraform-aws-wrapper-organization.svg?style=for-the-badge" alt="Last Commit"/></a><a href="https://registry.terraform.io/modules/gocloudLa/wrapper-organization/aws"><img src="https://img.shields.io/badge/Terraform-Registry-7B42BC?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform Registry"/></a></p>
-The Terraform wrapper for AWS Organization simplifies the management of AWS Organizations in the AWS cloud. This wrapper functions as a predefined template, facilitating the creation and management of organizational units, accounts, policies, and service access principals by handling all the technical details.
+The Terraform wrapper for AWS Organization simplifies the management of AWS Organizations in the AWS cloud. This wrapper functions as a predefined template, facilitating the creation and management of organizational units (including nested OUs via `/` in the OU map key—see examples), accounts, policies, and service access principals by handling all the technical details.
 
 ### ✨ Features
 
@@ -44,6 +44,12 @@ organization_parameters = {
 
         }
       }
+      "Workload/Dev" = {
+        ou_policies = {
+          "tag-convention" = {}
+          "governance"     = {}
+        }
+      }
       "Sandbox" = {
         ou_policies = {
           "tag-convention" = {}
@@ -63,7 +69,7 @@ organization_parameters = {
       # NEW
       "${local.metadata.public_domain}-dev" = {
         email                             = "email+dev@domain.com",
-        parent_id                         = "Workload",
+        parent_id                         = "Workload/Dev",
         allow_iam_users_access_to_billing = true
       }
       "${local.metadata.public_domain}-lab" = {
@@ -151,15 +157,15 @@ terraform state push ./terraform.tfstate
 
 
 ## 📑 Inputs
-| Name                          | Description                                                                    | Type     | Default                        | Required |
-| ----------------------------- | ------------------------------------------------------------------------------ | -------- | ------------------------------ | -------- |
-| enable_organization           | Enables or disables the organization service verification.                     | `bool`   | `false`                        | no       |
-| aws_service_access_principals | A list of principal services that will be enabled at an organization level.    | `list`   | `["cloudtrail.amazonaws.com"]` | no       |
-| feature_set                   | Allows the configuration of the billing in the accounts that will be created.  | `string` | `ALL`                          | no       |
-| organizational_units          | A map of OUs that will be created.                                             | `any`    | `{}`                           | no       |
-| accounts                      | A map of accounts that will be created under an organization or OU.            | `any`    | `{}`                           | no       |
-| enabled_policy_types          | A map of policies that will be created and later attached to an account or OU. | `any`    | `{}`                           | no       |
-| organization_policies         | A map of policies that will be created and later attached to an account or OU. | `any`    | `{}`                           | no       |
+| Name                          | Description                                                                             | Type     | Default                        | Required |
+| ----------------------------- | --------------------------------------------------------------------------------------- | -------- | ------------------------------ | -------- |
+| enable_organization           | Enables or disables the organization service verification.                              | `bool`   | `false`                        | no       |
+| aws_service_access_principals | A list of principal services that will be enabled at an organization level.             | `list`   | `["cloudtrail.amazonaws.com"]` | no       |
+| feature_set                   | Allows the configuration of the billing in the accounts that will be created.           | `string` | `ALL`                          | no       |
+| organizational_units          | A map of OUs that will be created. Keys may use `/` for nesting (parent keys required). | `any`    | `{}`                           | no       |
+| accounts                      | A map of accounts that will be created under an organization or OU.                     | `any`    | `{}`                           | no       |
+| enabled_policy_types          | A map of policies that will be created and later attached to an account or OU.          | `any`    | `{}`                           | no       |
+| organization_policies         | A map of policies that will be created and later attached to an account or OU.          | `any`    | `{}`                           | no       |
 
 
 
@@ -168,6 +174,7 @@ terraform state push ./terraform.tfstate
 
 
 ## ⚠️ Important Notes
+- **🔀 Nested OUs:** In `organizational_units`, use `/` in the key for child OUs (e.g. `Parent/Child`, up to two slashes for three levels). Each parent path must be its own key. See `examples/complete`.
 - **🚨 Critical State Management Warning:** When importing accounts, do not apply Terraform changes until the plan shows NO changes. This prevents accidentally overwriting or corrupting the organization state.
 - **📋 Account Import Process:** Follow the documented step-by-step process carefully to avoid state corruption during account imports.
 
