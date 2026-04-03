@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/gocloudLa/terraform-aws-wrapper-organization/compare/v1.0.0...v1.1.0) (2026-04-03)
+
+
+### Features
+
+* **ous:** add sub-ous support ([#3](https://github.com/gocloudLa/terraform-aws-wrapper-organization/issues/3)) ([1dd8e15](https://github.com/gocloudLa/terraform-aws-wrapper-organization/commit/1dd8e15878ce72802ab1a7053b689ea1697a4878))
+
 ## 1.0.0 (2025-09-05)
 
 
