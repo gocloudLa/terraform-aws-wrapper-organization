@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/gocloudLa/terraform-aws-wrapper-organization/compare/v1.1.0...v1.2.0) (2026-11-02)
+
+
+### Features
+
+* **module:** simplify organization policies ([833df52](https://github.com/gocloudLa/terraform-aws-wrapper-organization/commit/833df52476e3adc90304618602493437c8e56ab9))
+
 ## [1.1.0](https://github.com/gocloudLa/terraform-aws-wrapper-organization/compare/v1.0.0...v1.1.0) (2026-04-03)
 
 
