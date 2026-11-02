@@ -14,35 +14,10 @@ module "wrapper_organization" {
     feature_set = "ALL"
 
     organizational_units = {
-      "Transitional" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-          "compliance"     = {}
-        }
-      }
-      "Workload" = {
-        ou_policies = {
-          "tag-convention"      = {}
-          "aws-backup-deletion" = {}
-          "governance"          = {}
-          "compliance"          = {}
-
-        }
-      }
-      "Workload/Dev" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-        }
-      }
-      "Sandbox" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-          "compliance"     = {}
-        }
-      }
+      "Transitional" = {}
+      "Workload"     = {}
+      "Workload/Dev" = {}
+      "Sandbox"      = {}
     }
 
     accounts = {

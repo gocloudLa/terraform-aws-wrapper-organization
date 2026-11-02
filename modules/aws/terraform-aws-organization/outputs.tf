@@ -35,9 +35,3 @@ output "account_ids" {
     for k, account in aws_organizations_account.this : k => account.id
   })
 }
-
-output "policies_ids" {
-  value = tomap({
-    for k, policy in aws_organizations_policy.this : k => policy.id
-  })
-}
