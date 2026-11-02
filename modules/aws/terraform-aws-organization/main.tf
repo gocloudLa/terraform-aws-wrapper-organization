@@ -49,37 +49,3 @@ resource "aws_organizations_account" "this" {
   tags = var.tags
 }
 
-resource "aws_organizations_policy" "this" {
-  for_each = local.organization_policies
-
-  name        = each.key
-  description = try(each.value.type, each.value.type, null)
-  content     = each.value.content
-  type        = try(each.value.type, each.value.type, "SERVICE_CONTROL_POLICY")
-
-  tags = var.tags
-}
-
-## Organization Unit Attachment
-resource "aws_organizations_policy_attachment" "this_ou" {
-  for_each = local.ou_policies
-
-  policy_id = aws_organizations_policy.this[each.value.policy].id
-  target_id = local.organizational_unit_ids[each.value.ou_name]
-
-  depends_on = [
-    aws_organizations_organization.this
-  ]
-}
-
-## Organization Account Attachment
-resource "aws_organizations_policy_attachment" "this_account" {
-  for_each = local.account_policies
-
-  policy_id = aws_organizations_policy.this[each.value.policy].id
-  target_id = aws_organizations_account.this[each.value.account_name].id
-
-  depends_on = [
-    aws_organizations_organization.this
-  ]
-}

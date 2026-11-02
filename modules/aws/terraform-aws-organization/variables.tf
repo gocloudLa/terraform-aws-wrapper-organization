@@ -42,8 +42,3 @@ variable "accounts" {
   type        = any
   default     = {}
 }
-variable "organization_policies" {
-  description = "A map of policies that will be created and later attached to an account or OU"
-  type        = any
-  default     = {}
-}
