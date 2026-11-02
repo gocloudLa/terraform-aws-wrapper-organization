@@ -28,35 +28,10 @@ organization_parameters = {
     feature_set = "ALL"
 
     organizational_units = {
-      "Transitional" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-          "compliance"     = {}
-        }
-      }
-      "Workload" = {
-        ou_policies = {
-          "tag-convention"      = {}
-          "aws-backup-deletion" = {}
-          "governance"          = {}
-          "compliance"          = {}
-
-        }
-      }
-      "Workload/Dev" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-        }
-      }
-      "Sandbox" = {
-        ou_policies = {
-          "tag-convention" = {}
-          "governance"     = {}
-          "compliance"     = {}
-        }
-      }
+      "Transitional" = {}
+      "Workload" = {}
+      "Workload/Dev" = {}
+      "Sandbox" = {}
     }
 
     accounts = {
@@ -157,15 +132,14 @@ terraform state push ./terraform.tfstate
 
 
 ## 📑 Inputs
-| Name                          | Description                                                                             | Type     | Default                        | Required |
-| ----------------------------- | --------------------------------------------------------------------------------------- | -------- | ------------------------------ | -------- |
-| enable_organization           | Enables or disables the organization service verification.                              | `bool`   | `false`                        | no       |
-| aws_service_access_principals | A list of principal services that will be enabled at an organization level.             | `list`   | `["cloudtrail.amazonaws.com"]` | no       |
-| feature_set                   | Allows the configuration of the billing in the accounts that will be created.           | `string` | `ALL`                          | no       |
-| organizational_units          | A map of OUs that will be created. Keys may use `/` for nesting (parent keys required). | `any`    | `{}`                           | no       |
-| accounts                      | A map of accounts that will be created under an organization or OU.                     | `any`    | `{}`                           | no       |
-| enabled_policy_types          | A map of policies that will be created and later attached to an account or OU.          | `any`    | `{}`                           | no       |
-| organization_policies         | A map of policies that will be created and later attached to an account or OU.          | `any`    | `{}`                           | no       |
+| Name                          | Description                                                                                                   | Type     | Default                                    | Required |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------ | -------- |
+| enable_organization           | Enables or disables the organization service verification.                                                    | `bool`   | `false`                                    | no       |
+| aws_service_access_principals | A list of principal services that will be enabled at an organization level.                                   | `list`   | `["cloudtrail.amazonaws.com"]`             | no       |
+| feature_set                   | Allows the configuration of the billing in the accounts that will be created.                                 | `string` | `ALL`                                      | no       |
+| organizational_units          | A map of OUs that will be created. Keys may use `/` for nesting (parent keys required).                       | `any`    | `{}`                                       | no       |
+| accounts                      | A map of accounts that will be created under an organization or OU.                                           | `any`    | `{}`                                       | no       |
+| enabled_policy_types          | Policy types enabled on the organization root (e.g. `SERVICE_CONTROL_POLICY`, `TAG_POLICY`, `BACKUP_POLICY`). | `list`   | `["SERVICE_CONTROL_POLICY", "TAG_POLICY"]` | no       |
 
 
 
